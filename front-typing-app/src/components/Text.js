@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 
 const style = {
   correct: { color: "green" },
@@ -8,68 +8,31 @@ const style = {
 };
 
 const Text = ({ textStr, typingStats, setTypingStats }) => {
-  const [text, setText] = useState(initTextState(textStr));
-  const [idx, setIdx] = useState(0);
+  const initialState = { text: initTextState(textStr), idx: 0 };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     const start = performance.now();
     const handleCharInput = (e) => {
       const typingTime = Math.round(performance.now() - start);
 
-      if (text.length === idx + 1) {
-        console.log(generateTypingStats(text));
-
-        const updatedLetter = {
-          char: text[idx].char,
-          typingTime: typingTime,
-          state: e.key === text[idx].char ? "correct" : "incorrect",
-        };
-        setIdx((prev) => prev + 1);
-        const updatedtext = [
-          ...text.slice(0, idx),
-          updatedLetter,
-          ...text.slice(idx + 1),
-        ];
-        setText(updatedtext);
-
+      if (state.text.length === state.idx + 1) {
+        dispatch({ type: "caretForward", typingTime, key: e.key });
         setTypingStats((prev) => {
-          return generateTypingStats(text);
+          return generateTypingStats(state.text);
         });
         return;
       }
-
-      const updatedLetter = {
-        char: text[idx].char,
-        typingTime: typingTime,
-        state: e.key === text[idx].char ? "correct" : "incorrect",
-      };
-      setIdx((prev) => prev + 1);
-      const updatedtext = [
-        ...text.slice(0, idx),
-        updatedLetter,
-        ...text.slice(idx + 1),
-      ];
-      setText(updatedtext);
+      dispatch({ type: "caretForward", typingTime, key: e.key });
     };
 
     const handleBackspace = (e) => {
-      if (e.key === "Backspace" && idx === 0) {
+      const typingTime = Math.round(performance.now() - start);
+      if (e.key === "Backspace" && state.idx === 0) {
         return;
       }
-      const typingTime = Math.round(performance.now() - start);
       if (e.key === "Backspace") {
-        const updatedLetter = {
-          char: text[idx - 1].char,
-          typingTime: typingTime,
-          state: null,
-        };
-        setIdx((prev) => prev - 1);
-        const updatedtext = [
-          ...text.slice(0, idx - 1),
-          updatedLetter,
-          ...text.slice(idx),
-        ];
-        setText(updatedtext);
+        dispatch({ type: "caretBackward", typingTime, key: e.key });
       }
     };
 
@@ -79,15 +42,15 @@ const Text = ({ textStr, typingStats, setTypingStats }) => {
       window.removeEventListener("keypress", handleCharInput);
       window.removeEventListener("keydown", handleBackspace);
     };
-  }, [idx, text, setTypingStats]);
+  }, [dispatch, setTypingStats, state.text, state.idx]);
 
   return (
     <div className="Text" style={{ fontSize: "1rem" }}>
-      {text.map((letter, i) => (
+      {state.text.map((letter, i) => (
         <span
           className="Letter"
           key={i}
-          style={i === idx ? style["current"] : style[letter.state]}
+          style={i === state.idx ? style["current"] : style[letter.state]}
         >
           {letter.char}
         </span>
@@ -112,5 +75,40 @@ function generateTypingStats(text) {
     stats.time[char] = stats.time[char] ? [...stats.time[char], t] : [t];
   }
   return stats;
+}
+
+function reducer({ text, idx }, { type, typingTime, key }) {
+  switch (type) {
+    case "caretForward": {
+      const updatedLetter = {
+        char: text[idx].char,
+        typingTime: typingTime,
+        state: key === text[idx].char ? "correct" : "incorrect",
+      };
+      const updatedText = [
+        ...text.slice(0, idx),
+        updatedLetter,
+        ...text.slice(idx + 1),
+      ];
+      return { idx: idx + 1, text: updatedText };
+    }
+
+    case "caretBackward": {
+      const updatedLetter = {
+        char: text[idx - 1].char,
+        typingTime: typingTime,
+        state: null,
+      };
+      const updatedText = [
+        ...text.slice(0, idx - 1),
+        updatedLetter,
+        ...text.slice(idx),
+      ];
+      return { idx: idx - 1, text: updatedText };
+    }
+
+    default:
+      return { text, idx };
+  }
 }
 export { Text };
