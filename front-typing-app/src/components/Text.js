@@ -14,14 +14,29 @@ const Text = ({ textStr, typingStats, setTypingStats }) => {
   useEffect(() => {
     const start = performance.now();
     const handleCharInput = (e) => {
-      if (text.length === idx) {
+      const typingTime = Math.round(performance.now() - start);
+
+      if (text.length === idx + 1) {
         console.log(generateTypingStats(text));
+
+        const updatedLetter = {
+          char: text[idx].char,
+          typingTime: typingTime,
+          state: e.key === text[idx].char ? "correct" : "incorrect",
+        };
+        setIdx((prev) => prev + 1);
+        const updatedtext = [
+          ...text.slice(0, idx),
+          updatedLetter,
+          ...text.slice(idx + 1),
+        ];
+        setText(updatedtext);
+
         setTypingStats((prev) => {
           return generateTypingStats(text);
         });
         return;
       }
-      const typingTime = Math.round(performance.now() - start);
 
       const updatedLetter = {
         char: text[idx].char,
