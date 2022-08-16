@@ -1,25 +1,23 @@
 import { useEffect, useReducer } from "react";
-
-const style = {
-  correct: { color: "green" },
-  incorrect: { color: "red" },
-  current: { color: "white", backgroundColor: "black" },
-  null: { color: "black" },
-};
+import { Letter } from "./Letter";
 
 const Text = ({ textStr, typingStats, setTypingStats }) => {
-  const initialState = { text: initTextState(textStr), idx: 0 };
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initState(textStr));
 
   useEffect(() => {
+    if (state.status === "finished") {
+      setTypingStats(generateTypingStats(state.text));
+      return;
+    }
     const start = performance.now();
     const handleCharInput = (e) => {
       const typingTime = Math.round(performance.now() - start);
 
       if (state.text.length === state.idx + 1) {
-        dispatch({ type: "caretForward", typingTime, key: e.key });
-        setTypingStats((prev) => {
-          return generateTypingStats(state.text);
+        dispatch({
+          type: "endTest",
+          typingTime,
+          key: e.key,
         });
         return;
       }
@@ -27,11 +25,8 @@ const Text = ({ textStr, typingStats, setTypingStats }) => {
     };
 
     const handleBackspace = (e) => {
-      const typingTime = Math.round(performance.now() - start);
-      if (e.key === "Backspace" && state.idx === 0) {
-        return;
-      }
-      if (e.key === "Backspace") {
+      if (e.key === "Backspace" && state.idx !== 0) {
+        const typingTime = Math.round(performance.now() - start);
         dispatch({ type: "caretBackward", typingTime, key: e.key });
       }
     };
@@ -42,31 +37,32 @@ const Text = ({ textStr, typingStats, setTypingStats }) => {
       window.removeEventListener("keypress", handleCharInput);
       window.removeEventListener("keydown", handleBackspace);
     };
-  }, [dispatch, setTypingStats, state.text, state.idx]);
+  }, [dispatch, setTypingStats, state.text, state.idx, state.status]);
 
   return (
     <div className="Text" style={{ fontSize: "1rem" }}>
       {state.text.map((letter, i) => (
-        <span
-          className="Letter"
-          key={i}
-          style={i === state.idx ? style["current"] : style[letter.state]}
-        >
-          {letter.char}
-        </span>
+        <Letter {...{ i, letter, state }} />
       ))}
+      {typingStats && <div>Your typing stats are: {typingStats.errorRate}</div>}
     </div>
   );
 };
 
-function initTextState(textStr) {
+function initState(textStr) {
+  return {
+    text: textStr ? initText(textStr) : null,
+    idx: 0,
+    status: "notStarted",
+  };
+}
+function initText(textStr) {
   let text = textStr.split("");
   text = text.map((char) => {
-    return { char: char, state: null, typingTime: 0 };
+    return { char: char, status: "notTyped", typingTime: null };
   });
   return text;
 }
-
 function generateTypingStats(text) {
   let stats = { time: {} };
   for (let letter of text) {
@@ -74,41 +70,62 @@ function generateTypingStats(text) {
     const char = letter.char;
     stats.time[char] = stats.time[char] ? [...stats.time[char], t] : [t];
   }
+  stats.totalTime =
+    Object.values(stats.time)
+      .flatMap((time) => time)
+      .reduce((prev, curr) => prev + curr, 0) / 1000;
+  stats.accuracy =
+    (text
+      .filter((letter) => letter.status === "correct")
+      .reduce((prev, curr) => prev + 1, 0) /
+      text.length) *
+    100;
+  stats.wpm = (text.length / (stats.totalTime / 60) / 5) * stats.accuracy;
+  console.log(stats);
   return stats;
 }
 
-function reducer({ text, idx }, { type, typingTime, key }) {
+function reducer(state, action) {
+  const { text, idx } = state;
+  const { type, typingTime, key } = action;
+
+  const moveCaretForward = () => {
+    const updatedLetter = {
+      char: text[idx].char,
+      typingTime: typingTime,
+      status: key === text[idx].char ? "correct" : "incorrect",
+    };
+    const updatedText = [
+      ...text.slice(0, idx),
+      updatedLetter,
+      ...text.slice(idx + 1),
+    ];
+    return { ...state, idx: idx + 1, text: updatedText };
+  };
+  const moveCaretBackward = () => {
+    const updatedLetter = {
+      char: text[idx - 1].char,
+      typingTime: typingTime,
+      status: "notTyped",
+    };
+    const updatedText = [
+      ...text.slice(0, idx - 1),
+      updatedLetter,
+      ...text.slice(idx),
+    ];
+    return { ...state, idx: idx - 1, text: updatedText };
+  };
+
   switch (type) {
-    case "caretForward": {
-      const updatedLetter = {
-        char: text[idx].char,
-        typingTime: typingTime,
-        state: key === text[idx].char ? "correct" : "incorrect",
-      };
-      const updatedText = [
-        ...text.slice(0, idx),
-        updatedLetter,
-        ...text.slice(idx + 1),
-      ];
-      return { idx: idx + 1, text: updatedText };
-    }
-
-    case "caretBackward": {
-      const updatedLetter = {
-        char: text[idx - 1].char,
-        typingTime: typingTime,
-        state: null,
-      };
-      const updatedText = [
-        ...text.slice(0, idx - 1),
-        updatedLetter,
-        ...text.slice(idx),
-      ];
-      return { idx: idx - 1, text: updatedText };
-    }
-
+    case "caretForward":
+      return moveCaretForward();
+    case "caretBackward":
+      return moveCaretBackward();
+    case "endTest":
+      const finalState = moveCaretForward();
+      return { ...finalState, status: "finished" };
     default:
-      return { text, idx };
+      return state;
   }
 }
 export { Text };
