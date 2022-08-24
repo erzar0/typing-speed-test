@@ -1,20 +1,13 @@
 import "./App.css";
-import { useState } from "react";
-import { Text } from "./components/Text";
-
-const textStr =
-  "Sed ut perspiciatis, unde omnis iste natus error sit voluptatem.";
+import Test from "./components/Test";
 
 function App() {
-  const [typingStats, setTypingStats] = useState(null);
+  const textStr =
+    "Sed ut perspiciatis, unde omnis iste natus error sit voluptatem.";
 
-  const TextProps = { typingStats, setTypingStats, textStr };
   return (
     <div className="App" style={{ fontFamily: "monospace" }}>
-      <Text {...TextProps} />
-      {typingStats && (
-        <div>Your typing stats are: {JSON.stringify(typingStats)}</div>
-      )}
+      <Test textStr={textStr} />
     </div>
   );
 }

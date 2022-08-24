@@ -4,12 +4,14 @@ const letterStyle = {
   current: { color: "white", backgroundColor: "black" },
   notTyped: { color: "black" },
 };
-const Letter = ({ letter, state, i }) => {
+const Letter = ({ letter, caretPosition }) => {
   return (
     <span
       className="Letter"
       style={
-        i === state.idx ? letterStyle["current"] : letterStyle[letter.status]
+        letter.position === caretPosition
+          ? letterStyle["current"]
+          : letterStyle[letter.status]
       }
     >
       {letter.char}
