@@ -1,0 +1,21 @@
+@import "../styles.css";
+.headerContainer {
+  margin: 0px;
+  color: var(--violet);
+  background-color: var(--black);
+  padding: 0.3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  background-color: var(--yellow);
+  padding: 0.3rem 0.7rem;
+}
+
+.link {
+  font-size: 1.2rem;
+  color: black;
+  text-decoration: none;
+  margin: 0.5rem;
+}
