@@ -32,6 +32,11 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
+    "react-redux/useSelector-prefer-selectors": "off",
+    "no-unused-vars": [
+      "error",
+      { vars: "all", args: "none", ignoreRestSiblings: false },
+    ],
   },
   settings: {
     react: {
