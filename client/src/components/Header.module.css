@@ -1,16 +1,21 @@
 @import "../styles.css";
 .headerContainer {
   margin: 0px;
-  color: var(--violet);
-  background-color: var(--black);
+  background-color: var(--primary);
   padding: 0.3rem;
   display: flex;
   justify-content: center;
 }
 
 .button {
-  background-color: var(--yellow);
+  background-color: var(--ternary);
   padding: 0.3rem 0.7rem;
+  box-shadow: 2px 2px 5px 0px black;
+  border-radius: 10px/10px;
+}
+
+.button:hover {
+  background-color: var(--ternary2);
 }
 
 .link {

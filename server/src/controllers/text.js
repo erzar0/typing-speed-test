@@ -5,8 +5,8 @@ const path = require("path");
 
 const { getIntFromRange } = require("../utils/helperFunctions");
 
-const wordsPath = path.join(__dirname, "..", "/assets", "/words");
 const readWords = (wordsPath, lang, wordScope) => {
+  const wordsPath = path.join(__dirname, "..", "/assets", "/words");
   const p = path.join(wordsPath, `/${lang}_${wordScope}.txt`);
   return fs.readFileSync(p, "utf-8").split("\n");
 };

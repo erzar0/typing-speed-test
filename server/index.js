@@ -1,9 +1,12 @@
-const app = require("./app");
 const http = require("http");
-const config = require("./utils/config");
+const app = require("./src/app");
+const mongoose = require("mongoose");
+const config = require("./src/config/config");
 
 const server = http.createServer(app);
 
-server.listen(config.PORT, () => {
-  console.log(`Server running on port ${config.PORT}`);
+mongoose.connection.once("open", () => {
+  server.listen(config.PORT, () => {
+    console.log(`Server running on port ${config.PORT}`);
+  });
 });
