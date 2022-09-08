@@ -1,13 +1,24 @@
 :root {
-  --primary: #264653;
-  --secondary: #2a9d8f;
-  --ternary: #e9c46a;
-  --ternary2: #f4a261;
-  --ternary3: #e76f51;
+  --primary: #31087b;
+  --primary50: rgba(49, 8, 123, 0.5);
+  --secondary: #100720;
+  --tertiary: #ffc23c;
+  --quaternary: #fa2fb5;
 }
 body {
   background-color: var(--secondary);
   margin: 0px;
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
     sans-serif;
+}
+
+.Button {
+  background-color: var(--tertiary);
+  padding: 0.3rem 0.7rem;
+  box-shadow: 2px 2px 5px 0px black;
+  border-radius: 10px/10px;
+}
+
+.Button:hover {
+  background-color: var(--quaternary);
 }

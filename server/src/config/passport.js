@@ -3,14 +3,21 @@ const LocalStrategy = require("passport-local").Strategy;
 const User = require("../models/user");
 const passwordUtils = require("../utils/passwordUtils");
 
-const verifyCallback = async (username, password, done) => {
+const validateCallback = async (username, password, done) => {
   try {
     const user = await User.findOne({ username });
     if (!user) {
       return done(null, false);
     }
 
-    const isValid = passwordUtils.verify(password, user.hash);
+    let isValid;
+    console.log(user);
+    try {
+      isValid = await passwordUtils.validate(password, user.hash);
+    } catch (e) {
+      console.log("tu blad");
+    }
+    console.log("validating:", isValid);
     if (isValid) {
       return done(null, user);
     } else {
@@ -20,7 +27,7 @@ const verifyCallback = async (username, password, done) => {
     done(e);
   }
 };
-const strategy = new LocalStrategy(verifyCallback);
+const strategy = new LocalStrategy(validateCallback);
 
 passport.use(strategy);
 

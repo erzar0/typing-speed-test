@@ -6,14 +6,14 @@ import {
   updateLetterInText,
   initText,
   resetText,
-} from "../../reducers/textReducer";
+} from "../../reduxSlices/textSlice";
 import {
   moveCaretForward,
   moveCaretBackward,
   setTestStatus,
   setTypingStats,
   resetTest,
-} from "../../reducers/testReducer";
+} from "../../reduxSlices/testSlice";
 
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const Test = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const start = performance.now();
+    const startTime = performance.now();
     if (test.status === "finished") {
       dispatch(setTypingStats(text));
       dispatch(resetTest());
@@ -33,21 +33,26 @@ const Test = () => {
       navigate("/currentStats");
       return;
     } else if (test.status === "notStarted") {
-      try {
-        textService
-          .getText("en", "basic", 10)
-          .then((t) => dispatch(initText(t)));
-      } catch (e) {
-        console.log(e);
-      }
-      dispatch(setTestStatus("started"));
+      textService
+        .getText("en", "basic", 10)
+        .then((t) => {
+          dispatch(initText(t));
+          dispatch(setTestStatus("started"));
+        })
+        .catch((e) => console.log(e));
       return;
     }
 
     const handleCharInput = (e) => {
-      const typingTime = Math.round(performance.now() - start);
+      const dt = Math.round(performance.now() - startTime);
       const currLetter = text[test.caretPosition];
-      const status = currLetter.char === e.key ? "correct" : "incorrect";
+      const typingTime = currLetter.typingTime + dt;
+      let status = "";
+      if (currLetter.status === "toCorrect") {
+        status = currLetter.char === e.key ? "corrected" : "incorrect";
+      } else {
+        status = currLetter.char === e.key ? "correct" : "incorrect";
+      }
       const updatedLetter = { ...currLetter, typingTime, status };
 
       dispatch(updateLetterInText(updatedLetter));
@@ -60,9 +65,10 @@ const Test = () => {
 
     const handleBackspace = (e) => {
       if (e.key === "Backspace" && test.caretPosition > 0) {
-        const typingTime = null;
+        const dt = Math.round(performance.now() - startTime);
         const currLetter = text[test.caretPosition - 1];
-        const status = "notTyped";
+        const typingTime = currLetter.typingTime + dt;
+        const status = "toCorrect";
         const updatedLetter = { ...currLetter, typingTime, status };
 
         dispatch(updateLetterInText(updatedLetter));
@@ -82,5 +88,17 @@ const Test = () => {
     <>{test.status === "started" ? <Text test={test} text={text} /> : null}</>
   );
 };
-
+// function getUpdatedLetter(e, text, test, dt) {
+//   // const dt = Math.round(performance.now() - startTime);
+//   const currLetter = text[test.caretPosition];
+//   const typingTime = currLetter.typingTime + dt;
+//   let status = "";
+//   if (currLetter.status === "toCorrect") {
+//     status = currLetter.char === e.key ? "corrected" : "incorrect";
+//   } else {
+//     status = currLetter.char === e.key ? "correct" : "incorrect";
+//   }
+//   const updatedLetter = { ...currLetter, typingTime, status };
+//   return updatedLetter;
+// }
 export default Test;

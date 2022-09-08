@@ -15,7 +15,7 @@ const textSlice = createSlice({
           position: i,
           char: char,
           status: "notTyped",
-          typingTime: null,
+          typingTime: 0,
         };
       };
       state = textStr.split("").map((char, i) => getBasicLetterState(char, i));

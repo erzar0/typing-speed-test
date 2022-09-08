@@ -1,26 +1,28 @@
 @import "../styles.css";
-.headerContainer {
-  margin: 0px;
+
+.HeaderContainer {
   background-color: var(--primary);
-  padding: 0.3rem;
+  margin: 0 0 1rem;
   display: flex;
+  width: 100%;
   justify-content: center;
+  flex: none;
 }
 
-.button {
-  background-color: var(--ternary);
-  padding: 0.3rem 0.7rem;
-  box-shadow: 2px 2px 5px 0px black;
-  border-radius: 10px/10px;
-}
-
-.button:hover {
-  background-color: var(--ternary2);
-}
-
-.link {
+.Button {
+  background-color: var(--tertiary);
   font-size: 1.2rem;
-  color: black;
   text-decoration: none;
+  color: black;
   margin: 0.5rem;
+  padding: 0.3rem;
+  box-shadow: 2px 2px 5px 0px black;
+  border-radius: 10px;
+}
+.Button:hover {
+  background-color: var(--quaternary);
+}
+
+.Link {
+  text-decoration: none;
 }

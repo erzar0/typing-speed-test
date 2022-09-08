@@ -2,13 +2,17 @@ import { Link } from "react-router-dom";
 import style from "./Header.module.css";
 const Header = () => {
   return (
-    <div className={style.headerContainer}>
-      <Link className={style.link} to={"/"}>
-        <div className={style.button}>Test</div>
+    <div className={style.HeaderContainer}>
+      <Link className={style.Link} to={"/"}>
+        <div className={style.Button}>Test</div>
       </Link>
 
-      <Link className={style.link} to={"/currentStats"}>
-        <div className={style.button}>Recent Stats</div>
+      <Link className={style.Link} to={"/currentStats"}>
+        <div className={style.Button}>Recent Stats</div>
+      </Link>
+
+      <Link className={style.Link} to={"/login"}>
+        <div className={style.Button}>Login</div>
       </Link>
     </div>
   );

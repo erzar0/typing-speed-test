@@ -1,0 +1,32 @@
+@import "../../styles.css";
+
+.LoginFormContainer {
+  color: var(--tertiary);
+  /* display: inline-block; */
+  text-align: left;
+  background-color: var(--primary50);
+  max-width: 50%;
+  max-height: 70%;
+  padding: 1.5em;
+  border-radius: 10px;
+  outline-style: solid;
+}
+
+.InputLabel {
+  font-size: 1.5rem;
+  display: block;
+  margin: 0.5rem 0 0.15rem;
+}
+
+.SubmitButton {
+  composes: Button from "../../styles.css";
+  font-size: 1rem;
+  margin: 0.5rem 0 0 0;
+  padding: 0.5rem 0 0.5rem 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.InputField {
+  max-width: 100%;
+}

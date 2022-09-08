@@ -2,11 +2,16 @@ import style from "./TypingStats.module.css";
 
 const TypingStats = ({ typingStats }) => {
   if (!typingStats) {
-    return <div>You must first complete the test!</div>;
+    return (
+      <div className={style.StatsContainer}>
+        You must first complete the test!
+      </div>
+    );
   }
+  console.log(typingStats);
   return (
-    <div className={style.statsContainer}>
-      <div>Avg time of typing character:</div>
+    <div className={style.StatsContainer}>
+      <h3>Avg time of typing character:</h3>
       {Object.entries(typingStats.avgTypingTimes)
         .sort()
         .map((entry) => {

@@ -9,6 +9,9 @@ let RedisStore = require("connect-redis")(session);
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const hpp = require("hpp");
+const csurf = require("csurf");
+const rateLimit = require("express-rate-limit");
 const textRouter = require("./controllers/text");
 const authRouter = require("./controllers/auth");
 
@@ -25,6 +28,8 @@ redisClient.connect().catch(console.error);
 require("./config/passport");
 
 app.disable("x-powered-by");
+// app.use(helmet());
+// app.use(hpp())
 app.use(
   session({
     store: new RedisStore({ client: redisClient }),
@@ -39,17 +44,32 @@ app.use(
   })
 );
 
+// const apiLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+//   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+//   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+// });
+
+// app.use("/api/", apiLimiter);
+// app.use(csurf({ cookie: true }));
+
 app.use(cors());
 app.use(express.json());
-// app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
+
+// app.use((req, res, next) => {
+//   console.log(req.session);
+//   console.log(req.body);
+//   next();
+// });
+
 app.use(morgan("dev"));
 app.use("/api/text", textRouter);
 app.use("/api/auth", authRouter);
 
 app.get("/", (req, res) => {
-  console.log(req.session);
   res.json({ elo: "world" });
 });
 
