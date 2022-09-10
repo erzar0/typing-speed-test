@@ -1,19 +1,25 @@
 import { Link } from "react-router-dom";
 import style from "./Header.module.css";
-const Header = () => {
+import LogoutButton from "./LogoutButton";
+
+const Header = ({ user }) => {
   return (
     <div className={style.HeaderContainer}>
       <Link className={style.Link} to={"/"}>
-        <div className={style.Button}>Test</div>
+        <div className={style.HeaderButton}>Test</div>
       </Link>
 
-      <Link className={style.Link} to={"/currentStats"}>
-        <div className={style.Button}>Recent Stats</div>
+      <Link className={style.Link} to={"/recent-stats"}>
+        <div className={style.HeaderButton}>Recent Stats</div>
       </Link>
 
-      <Link className={style.Link} to={"/login"}>
-        <div className={style.Button}>Login</div>
-      </Link>
+      {user ? (
+        <LogoutButton />
+      ) : (
+        <Link className={style.Link} to={"/login"}>
+          <div className={style.HeaderButton}>Login</div>
+        </Link>
+      )}
     </div>
   );
 };

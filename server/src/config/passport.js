@@ -5,19 +5,12 @@ const passwordUtils = require("../utils/passwordUtils");
 
 const validateCallback = async (username, password, done) => {
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).select("+hash");
     if (!user) {
       return done(null, false);
     }
 
-    let isValid;
-    console.log(user);
-    try {
-      isValid = await passwordUtils.validate(password, user.hash);
-    } catch (e) {
-      console.log("tu blad");
-    }
-    console.log("validating:", isValid);
+    const isValid = await passwordUtils.validate(password, user.hash);
     if (isValid) {
       return done(null, user);
     } else {
@@ -37,7 +30,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (userId, done) => {
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select("+hash");
     done(null, user);
   } catch (e) {
     done(e);

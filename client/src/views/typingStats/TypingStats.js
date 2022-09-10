@@ -8,7 +8,6 @@ const TypingStats = ({ typingStats }) => {
       </div>
     );
   }
-  console.log(typingStats);
   return (
     <div className={style.StatsContainer}>
       <h3>Avg time of typing character:</h3>

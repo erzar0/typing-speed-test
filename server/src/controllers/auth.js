@@ -2,58 +2,50 @@ const authRouter = require("express").Router();
 const passport = require("passport");
 const User = require("../models/user");
 const passwordUtils = require("../utils/passwordUtils");
-const { isAdmin, isAuth } = require("../middleware/authMiddleware");
+const isAuth = require("../middleware/authMiddleware");
 
 authRouter.route("/register").post(async (req, res) => {
   const { username, password } = req.body;
 
-  const existingUser = await User.findOne({ username });
+  const existingUser = await User.findOne({ username }).select("+hash");
   if (existingUser) {
-    res.status(400).send("User already exist");
+    res.status(400).json({ msg: "User already exist" });
     return;
   }
-
   const hash = await passwordUtils.generate(password);
   const newUser = new User({ username, hash });
   await newUser.save();
 
-  res.redirect("login");
+  res.status(200).end();
 });
 
-authRouter
-  .route("/login")
-  .get((req, res) => {
-    if (req.session.user) {
-      res.send({ loggedIn: true, user: req.session.user });
-    }
+authRouter.route("/login").post(
+  passport.authenticate("local", {
+    successRedirect: "login-success",
+    failureRedirect: "login-failure",
   })
-  .post(passport.authenticate("local", {}), (req, res) => {
-    res.send({ loggedIn: true, user: req.session.user });
-  });
+);
 
 authRouter.route("/logout").get((req, res, next) => {
   req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
+    console.log(err);
   });
-  res.redirect("/");
+  res.json({ success: true, msg: "logged out successfully" });
 });
 
-// authRouter.route("/login-success").get((req, res) => {
-//   res.send("Logged successfully").end();
-// });
-
-// authRouter.route("/login-failure").get((req, res) => {
-//   res.send("Failed to login");
-// });
-
-// authRouter.route("/protected-route").get(isAuth, (req, res) => {
-//   res.send("You are authenticated");
-// });
-
-// authRouter.route("/admin-route").get(isAdmin, (req, res) => {
-//   res.send("You are admin");
-// });
+authRouter.route("/login-success").get(async (req, res) => {
+  if (req.user) {
+    res.json({
+      success: true,
+      msg: "authentication succeeded",
+      user: await User.findById(req.user._id),
+    });
+    return;
+  }
+  res.json({ success: false, msg: "you are not authenticated" });
+});
+authRouter.route("/login-failure").get((req, res) => {
+  res.status(401).json({ success: false, msg: "authentication failed" });
+});
 
 module.exports = authRouter;

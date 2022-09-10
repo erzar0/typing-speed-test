@@ -1,7 +1,12 @@
+const basicLetterStyle = { margin: "0px" };
 const letterStyle = {
-  correct: { color: "green" },
+  correct: { color: "white", opacity: "0.5" },
   corrected: { color: "orange" },
-  incorrect: { color: "red" },
+  incorrect: {
+    color: "red",
+    textDecoration: "underline",
+    textDecorationThickness: "1px",
+  },
   current: { color: "black", backgroundColor: "white" },
   notTyped: { color: "white" },
   toCorrect: { color: "white" },
@@ -12,8 +17,8 @@ const Letter = ({ letter, caretPosition }) => {
       className="Letter"
       style={
         letter.position === caretPosition
-          ? letterStyle["current"]
-          : letterStyle[letter.status]
+          ? { ...letterStyle["current"], ...basicLetterStyle }
+          : { ...letterStyle[letter.status], ...basicLetterStyle }
       }
     >
       {letter.char}

@@ -1,4 +1,5 @@
 const express = require("express");
+require("express-async-errors");
 const passport = require("passport");
 const database = require("./config/database");
 const config = require("./config/config");
@@ -58,13 +59,6 @@ app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
-
-// app.use((req, res, next) => {
-//   console.log(req.session);
-//   console.log(req.body);
-//   next();
-// });
-
 app.use(morgan("dev"));
 app.use("/api/text", textRouter);
 app.use("/api/auth", authRouter);

@@ -30,11 +30,11 @@ const Test = () => {
       dispatch(setTypingStats(text));
       dispatch(resetTest());
       dispatch(resetText());
-      navigate("/currentStats");
+      navigate("/recent-stats");
       return;
     } else if (test.status === "notStarted") {
       textService
-        .getText("en", "basic", 10)
+        .getText("pl", "complex", 10)
         .then((t) => {
           dispatch(initText(t));
           dispatch(setTestStatus("started"));

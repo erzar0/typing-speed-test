@@ -1,4 +1,4 @@
-@import "../styles.css";
+@import "../App.module.css";
 
 .HeaderContainer {
   background-color: var(--primary);
@@ -9,7 +9,7 @@
   flex: none;
 }
 
-.Button {
+.HeaderButton {
   background-color: var(--tertiary);
   font-size: 1.2rem;
   text-decoration: none;
@@ -19,8 +19,9 @@
   box-shadow: 2px 2px 5px 0px black;
   border-radius: 10px;
 }
-.Button:hover {
+.HeaderButton:hover {
   background-color: var(--quaternary);
+  cursor: pointer;
 }
 
 .Link {

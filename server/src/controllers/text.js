@@ -1,5 +1,4 @@
 const textRouter = require("express").Router();
-const { isAuth } = require("../middleware/authMiddleware");
 
 const fs = require("fs");
 const path = require("path");
@@ -12,7 +11,7 @@ const readWords = (wordsPath, lang, wordScope) => {
   return fs.readFileSync(p, "utf-8").split("\n");
 };
 
-textRouter.get("/:lang/:wordScope/:wordCount", isAuth, (req, res) => {
+textRouter.get("/:lang/:wordScope/:wordCount", (req, res) => {
   const { lang, wordScope, wordCount } = req.params;
   const words = readWords(wordsPath, lang, wordScope);
   const randomWord = () => words[getIntFromRange(0, words.length)];

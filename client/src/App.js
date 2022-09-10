@@ -1,8 +1,9 @@
-import { useSelector } from "react-redux";
-import { setUser, setRole } from "./reduxSlices/userSlice";
-
+import { useSelector, useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
-import { authService } from "./services/authService";
+import authService from "./services/authService";
+import { useEffect } from "react";
+import { setUser } from "./reduxSlices/userSlice";
+import style from "./App.module.css";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,35 +11,33 @@ import Footer from "./components/Footer";
 import TestView from "./views/typingTest/TypingTest";
 import TypingStatsView from "./views/typingStats/TypingStats";
 import Login from "./views/login/Login";
-import { useEffect } from "react";
 
 function App() {
   const test = useSelector((state) => state.test);
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    authService
+      .isUserLogged()
+      .then((data) => {
+        let user = null;
+        if (data.success) {
+          user = data.user;
+        }
+        dispatch(setUser(user));
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
   return (
-    <div
-      className="App"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignContent: "space-between",
-        alignItems: "center",
-        maxHeight: "100%",
-        minHeight: "100vh",
-        width: "100%",
-        outline: "solid",
-        outlineColor: "white",
-      }}
-    >
-      <Header />
+    <div className={style.AppContainer}>
+      <Header user={user} />
       <Routes>
-        {user || <Route path="/login" element={<Login />}></Route>}
+        <Route path="/login" element={<Login />}></Route>
         <Route path="/" element={<TestView />}></Route>
         <Route
-          path="/currentStats"
+          path="/recent-stats"
           element={<TypingStatsView typingStats={test.typingStats} />}
         ></Route>
       </Routes>
