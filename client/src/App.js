@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import TestView from "./views/typingTest/TypingTest";
 import TypingStatsView from "./views/typingStats/TypingStats";
 import Login from "./views/login/Login";
+import Register from "./views/register/Register";
 
 function App() {
   const test = useSelector((state) => state.test);
@@ -34,8 +35,9 @@ function App() {
     <div className={style.AppContainer}>
       <Header user={user} />
       <Routes>
-        <Route path="/login" element={<Login />}></Route>
         <Route path="/" element={<TestView />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
         <Route
           path="/recent-stats"
           element={<TypingStatsView typingStats={test.typingStats} />}

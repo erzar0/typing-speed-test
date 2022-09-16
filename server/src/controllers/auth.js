@@ -5,16 +5,22 @@ const passwordUtils = require("../utils/passwordUtils");
 const isAuth = require("../middleware/authMiddleware");
 
 authRouter.route("/register").post(async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
+  console.log(req.body);
 
-  const existingUser = await User.findOne({ username }).select("+hash");
+  const existingUser = await User.findOne({ username });
   if (existingUser) {
     res.status(400).json({ msg: "User already exist" });
     return;
   }
   const hash = await passwordUtils.generate(password);
-  const newUser = new User({ username, hash });
-  await newUser.save();
+  const newUser = new User({ username, hash, email });
+  try {
+    await newUser.save();
+  } catch (e) {
+    console.log("Error occured while saving new user to db", e);
+    res.status(500).json({ msg: "Error occured while saving new user to db" });
+  }
 
   res.status(200).end();
 });

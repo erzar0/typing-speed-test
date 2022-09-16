@@ -1,6 +1,6 @@
 @import "../../App.module.css";
 
-.LoginFormContainer {
+.RegisterFormContainer {
   color: var(--tertiary);
   /* display: inline-block; */
   text-align: left;
@@ -22,7 +22,7 @@
   font-size: 1rem;
   margin: 0.5rem 0 0 0;
   padding: 0.5rem 0 0.5rem 0;
-  width: 100%;
+  min-width: 100%;
   max-width: 100%;
 }
 
@@ -31,6 +31,6 @@
 }
 
 .InputField {
-  max-width: 96.5%;
   min-width: 96.5%;
+  max-width: 96.5%;
 }

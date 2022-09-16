@@ -1,7 +1,7 @@
 import axios from "axios";
 const baseUrl = "/api/auth";
 
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 const login = async (username, password) => {
   const res = await axios.post(baseUrl + "/login", { username, password });
@@ -18,5 +18,16 @@ const isUserLogged = async () => {
   return res.data;
 };
 
-const authService = { login, isUserLogged, logout };
+const register = async ({ username, password, email }) => {
+  const registerData = {
+    username,
+    email,
+    password,
+  };
+  console.log(registerData);
+  const res = await axios.post(baseUrl + "/register", registerData);
+  return res.data;
+};
+
+const authService = { login, isUserLogged, logout, register };
 export default authService;

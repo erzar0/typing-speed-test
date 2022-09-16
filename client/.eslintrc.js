@@ -9,6 +9,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:react-redux/recommended",
     "plugin:react/recommended",
+    "plugin:css-modules/recommended",
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -17,7 +18,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
   },
-  plugins: ["react-redux", "jest"],
+  plugins: ["react-redux", "jest", "css-modules"],
   rules: {
     indent: ["error", 2],
     "linebreak-style": ["error", "unix"],
@@ -37,6 +38,8 @@ module.exports = {
       "error",
       { vars: "all", args: "none", ignoreRestSiblings: false },
     ],
+    "css-modules/no-unused-class": "off",
+    "property-no-unknown": "off",
   },
   settings: {
     react: {

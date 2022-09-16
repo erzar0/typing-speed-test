@@ -14,11 +14,16 @@ const Header = ({ user }) => {
       </Link>
 
       {user ? (
-        <LogoutButton />
+        <LogoutButton style={{ alignSelf: "flex-end" }} />
       ) : (
-        <Link className={style.Link} to={"/login"}>
-          <div className={style.HeaderButton}>Login</div>
-        </Link>
+        <>
+          <Link className={style.Link} to={"/login"} replace>
+            <div className={style.HeaderButton}>Login</div>
+          </Link>
+          <Link className={style.Link} to={"/register"} replace>
+            <div className={style.HeaderButton}>Register</div>
+          </Link>
+        </>
       )}
     </div>
   );
