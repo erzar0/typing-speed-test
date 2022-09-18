@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import { Form, Field } from "react-final-form";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../../reduxSlices/userSlice";
@@ -5,6 +6,7 @@ import { useDispatch } from "react-redux";
 import authService from "../../services/authService";
 import style from "../Form.module.css";
 
+const usernameRegex = /^[A-z0-9_-]{3,16}$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 const LoginForm = () => {
@@ -32,15 +34,16 @@ const LoginForm = () => {
 
     if (!username) {
       errors.username = "Required";
-    } else if (username.length < 3) {
-      errors.username = "Username too short";
+    } else if (!usernameRegex.test(username)) {
+      errors.username = "Invalid username format";
     }
 
     if (!password) {
       errors.password = "Required";
     } else if (!passwordRegex.test(password)) {
-      errors.password = "Invalid password";
+      errors.password = "Invalid password format";
     }
+    return errors;
   };
   return (
     <div className={style.FormContainer}>
@@ -50,24 +53,34 @@ const LoginForm = () => {
         validate={validate}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <div>
-              <label className={style.InputLabel}>Username</label>
-              <Field
-                className={style.InputField}
-                name="username"
-                component="input"
-                placeholder="Username"
-              />
-            </div>
-            <div>
-              <label className={style.InputLabel}>Password</label>
-              <Field
-                className={style.InputField}
-                name="password"
-                component="input"
-                placeholder="Password"
-              />
-            </div>
+            <Field name="username">
+              {({ input, meta }) => (
+                <div>
+                  <label className={style.InputLabel}>Username</label>
+                  <input
+                    {...input}
+                    className={style.InputField}
+                    type="text"
+                    placeholder="Username"
+                  ></input>
+                  {meta.error && meta.touched && <span>{meta.error}</span>}
+                </div>
+              )}
+            </Field>
+            <Field name="password">
+              {({ input, meta }) => (
+                <div>
+                  <label className={style.InputLabel}>Username</label>
+                  <input
+                    {...input}
+                    className={style.InputField}
+                    type="password"
+                    placeholder="Password"
+                  ></input>
+                  {meta.error && meta.touched && <span>{meta.error}</span>}
+                </div>
+              )}
+            </Field>
             <button className={style.SubmitButton} type="submit">
               Submit
             </button>
