@@ -20,7 +20,7 @@ module.exports = {
   },
   plugins: ["react-redux", "jest", "css-modules"],
   rules: {
-    indent: ["error", 2],
+    indent: ["error", 2, { SwitchCase: "off" }],
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"],

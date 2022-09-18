@@ -9,18 +9,7 @@
 }
 
 .HeaderButton {
-  background-color: var(--tertiary);
-  font-size: 1.2rem;
-  text-decoration: none;
-  color: black;
-  margin: 0.5rem;
-  padding: 0.3rem;
-  box-shadow: 2px 2px 5px 0px black;
-  border-radius: 10px;
-}
-.HeaderButton:hover {
-  background-color: var(--quaternary);
-  cursor: pointer;
+  composes: Button from "../App.module.css";
 }
 
 .Link {

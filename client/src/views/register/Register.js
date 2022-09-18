@@ -2,6 +2,8 @@
 import style from "../Form.module.css";
 import { Field, Form } from "react-final-form";
 import authService from "../../services/authService";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const usernameRequirements = `Username must be 3-16 characters long, contain only alphanumeric symbols, - and _`;
 const usernameRegex = /^[A-z0-9_-]{3,16}$/;
@@ -11,14 +13,16 @@ const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const Register = () => {
+  const navigate = useNavigate();
   const onSubmit = async (values) => {
     const { username, password, email } = values;
     try {
-      const data = await authService.register({ username, password, email });
-      console.log("data");
-      return data;
+      await authService.register({ username, password, email });
+      navigate("/");
+      toast.success("Registration succeeded!");
     } catch (e) {
-      console.log(e);
+      toast.error("Registration failed!");
+      console.log(e.message);
     }
   };
   const validate = (values) => {

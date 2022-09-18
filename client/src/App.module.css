@@ -26,11 +26,16 @@ body {
 
 .Button {
   background-color: var(--tertiary);
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: black;
   padding: 0.3rem 0.7rem;
-  box-shadow: 2px 2px 5px 0px black;
-  border-radius: 10px/10px;
+  margin: 0.5rem;
+  box-shadow: 2px 2px 2px 0px black;
+  border-radius: 10px;
 }
 
 .Button:hover {
   background-color: var(--quaternary);
+  cursor: pointer;
 }

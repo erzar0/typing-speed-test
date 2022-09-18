@@ -24,7 +24,6 @@ const register = async ({ username, password, email }) => {
     email,
     password,
   };
-  console.log(registerData);
   const res = await axios.post(baseUrl + "/register", registerData);
   return res.data;
 };

@@ -5,6 +5,7 @@ import { setUser } from "../../reduxSlices/userSlice";
 import { useDispatch } from "react-redux";
 import authService from "../../services/authService";
 import style from "../Form.module.css";
+import { toast } from "react-toastify";
 
 const usernameRegex = /^[A-z0-9_-]{3,16}$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -18,11 +19,12 @@ const LoginForm = () => {
     try {
       const data = await authService.login(username, password);
       if (data.success) {
-        console.log(data);
         user = data.user;
+        toast.success("Authentication succeeded!");
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
+      toast.error("Authentication failed");
     }
     dispatch(setUser(user));
     navigate("/");
@@ -45,6 +47,12 @@ const LoginForm = () => {
     }
     return errors;
   };
+  const InputError = ({ meta }) => {
+    if (meta.error && meta.touched) {
+      return <span className={style.InputMessage}>{meta.error}</span>;
+    }
+    return null;
+  };
   return (
     <div className={style.FormContainer}>
       <h1>Login</h1>
@@ -63,21 +71,21 @@ const LoginForm = () => {
                     type="text"
                     placeholder="Username"
                   ></input>
-                  {meta.error && meta.touched && <span>{meta.error}</span>}
+                  <InputError meta={meta} />
                 </div>
               )}
             </Field>
             <Field name="password">
               {({ input, meta }) => (
                 <div>
-                  <label className={style.InputLabel}>Username</label>
+                  <label className={style.InputLabel}>Password</label>
                   <input
                     {...input}
                     className={style.InputField}
                     type="password"
                     placeholder="Password"
                   ></input>
-                  {meta.error && meta.touched && <span>{meta.error}</span>}
+                  <InputError meta={meta} />
                 </div>
               )}
             </Field>

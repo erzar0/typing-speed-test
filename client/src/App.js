@@ -1,11 +1,12 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
-import authService from "./services/authService";
-import { useEffect } from "react";
 import { setUser } from "./reduxSlices/userSlice";
+import authService from "./services/authService";
 import style from "./App.module.css";
 
 import Header from "./components/Header";
+import Notification from "./components/Notification";
 import Footer from "./components/Footer";
 
 import TestView from "./views/typingTest/TypingTest";
@@ -33,6 +34,7 @@ function App() {
 
   return (
     <div className={style.AppContainer}>
+      <Notification />
       <Header user={user} />
       <Routes>
         <Route path="/" element={<TestView />}></Route>

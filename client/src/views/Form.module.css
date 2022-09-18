@@ -11,25 +11,28 @@
   outline-style: solid;
 }
 
-.InputLabel {
-  font-size: 1.5rem;
-  display: block;
-  margin: 0.5rem 0 0.15rem;
-}
-
 .SubmitButton {
   composes: Button from "../App.module.css";
   font-size: 1rem;
-  margin: 0.5rem 0 0 0;
+  margin: 0.8rem 0 0 0;
   padding: 0.5rem 0 0.5rem 0;
   min-width: 100%;
   max-width: 100%;
 }
 
-.SubmitButton:hover {
-  cursor: pointer;
+.InputLabel {
+  font-size: 1.5rem;
+  display: block;
+  margin: 0.75rem 0 0.3rem;
 }
 
 .InputField {
   width: 98%;
+  font-size: 1rem;
+}
+
+.InputMessage {
+  color: rgb(255, 0, 0);
+  display: block;
+  margin: 0.3rem 0 0 0;
 }
