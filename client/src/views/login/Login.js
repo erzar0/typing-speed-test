@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { setUser } from "../../reduxSlices/userSlice";
 import { useDispatch } from "react-redux";
 import authService from "../../services/authService";
-import style from "./Login.module.css";
+import style from "../Form.module.css";
+
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -23,9 +25,25 @@ const LoginForm = () => {
     dispatch(setUser(user));
     navigate("/");
   };
-  const validate = () => {};
+
+  const validate = (values) => {
+    const { username, password } = values;
+    let errors = {};
+
+    if (!username) {
+      errors.username = "Required";
+    } else if (username.length < 3) {
+      errors.username = "Username too short";
+    }
+
+    if (!password) {
+      errors.password = "Required";
+    } else if (!passwordRegex.test(password)) {
+      errors.password = "Invalid password";
+    }
+  };
   return (
-    <div className={style.LoginFormContainer}>
+    <div className={style.FormContainer}>
       <h1>Login</h1>
       <Form
         onSubmit={onSubmit}

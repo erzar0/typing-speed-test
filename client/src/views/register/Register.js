@@ -1,8 +1,11 @@
-import style from "./Register.module.css";
+/* eslint-disable quotes */
+import style from "../Form.module.css";
 import { Field, Form } from "react-final-form";
 import authService from "../../services/authService";
 
-// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:
+const usernameRequirements = `Username must be 3-16 characters long, contain only alphanumeric symbols, - and _`;
+const usernameRegex = /^[A-z0-9_-]{3,16}$/;
+const passwordRequirements = `Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter and one number`;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -24,14 +27,14 @@ const Register = () => {
 
     if (!username) {
       errors.username = "Required";
-    } else if (username.length < 3) {
-      errors.username = "Username too short";
+    } else if (!usernameRegex.test(username)) {
+      errors.username = usernameRequirements;
     }
 
     if (!password) {
       errors.password = "Required";
     } else if (!passwordRegex.test(password)) {
-      errors.password = "Invalid password";
+      errors.password = passwordRequirements;
     }
 
     if (!confirm) {
@@ -50,7 +53,7 @@ const Register = () => {
     return errors;
   };
   return (
-    <div className={style.RegisterFormContainer}>
+    <div className={style.FormContainer}>
       <h1>Register</h1>
       <Form
         onSubmit={onSubmit}

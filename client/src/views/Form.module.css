@@ -1,11 +1,11 @@
-@import "../../App.module.css";
+@import "../App.module.css";
 
-.LoginFormContainer {
+.FormContainer {
   color: var(--tertiary);
   /* display: inline-block; */
   text-align: left;
   background-color: var(--primary50);
-  width: 250px;
+  width: 400px;
   padding: 1.5em;
   border-radius: 10px;
   outline-style: solid;
@@ -18,11 +18,11 @@
 }
 
 .SubmitButton {
-  composes: Button from "../../App.module.css";
+  composes: Button from "../App.module.css";
   font-size: 1rem;
   margin: 0.5rem 0 0 0;
   padding: 0.5rem 0 0.5rem 0;
-  width: 100%;
+  min-width: 100%;
   max-width: 100%;
 }
 
@@ -31,6 +31,5 @@
 }
 
 .InputField {
-  max-width: 96.5%;
-  min-width: 96.5%;
+  width: 98%;
 }
