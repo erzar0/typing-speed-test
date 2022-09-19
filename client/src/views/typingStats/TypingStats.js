@@ -1,4 +1,5 @@
 import style from "./TypingStats.module.css";
+import { LineChart, Line } from "recharts";
 
 const TypingStats = ({ typingStats }) => {
   if (!typingStats) {
@@ -8,10 +9,14 @@ const TypingStats = ({ typingStats }) => {
       </div>
     );
   }
+  console.log(typingStats);
   return (
     <div className={style.StatsContainer}>
       <h3>Avg time of typing character:</h3>
-      {Object.entries(typingStats.avgTypingTimes)
+      <LineChart width={400} height={400} data={data}>
+        <Line type="monotone" dataKey="uv" stroke="white" />
+      </LineChart>
+      {/* {Object.entries(typingStats.avgTypingTimes)
         .sort()
         .map((entry) => {
           const char = entry[0];
@@ -22,7 +27,7 @@ const TypingStats = ({ typingStats }) => {
               <span>{`${time} ms`} </span>
             </div>
           );
-        })}
+        })} */}
     </div>
   );
 };
