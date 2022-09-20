@@ -1,0 +1,5 @@
+@import "../../App.module.css";
+.StatsContainer {
+  margin: 1rem;
+  color: white;
+}
