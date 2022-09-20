@@ -3,7 +3,7 @@ function generateTypingStats(text) {
 
   let stats = {};
   stats.typingTimes = getTypingTimes(text);
-  stats.avgTypingTimes = getAvgTypingTimes(stats.typingTimes);
+  stats.avgTypingTimes = getAvgTypingTimes(text);
   stats.totalTime = getTotalTime(stats.typingTimes);
   stats.accuracy = getAccuracy(text);
   stats.overallWpm = getOverallWpm(text, stats);
@@ -12,18 +12,25 @@ function generateTypingStats(text) {
 }
 
 function getTypingTimes(text) {
-  let typingTimes = {};
-  for (let letter of text) {
-    const t = letter.typingTime;
-    const char = letter.char;
-    typingTimes[char] = typingTimes[char] ? [...typingTimes[char], t] : [t];
-  }
-  return typingTimes;
+  return text.map((l) => {
+    return { [l.char]: l.typingTime };
+  });
 }
 
-function getAvgTypingTimes(typingTimes) {
+function getAvgTypingTimes(text) {
+  const getTypingTimesSorted = () => {
+    let typingTimes = {};
+    for (let letter of text) {
+      const t = letter.typingTime;
+      const char = letter.char;
+      typingTimes[char] = typingTimes[char] ? [...typingTimes[char], t] : [t];
+    }
+    return typingTimes;
+  };
+
+  const typingTimesSorted = getTypingTimesSorted();
   let avgTypingTimes = {};
-  Object.entries(typingTimes)
+  Object.entries(typingTimesSorted)
     .sort()
     .forEach((entry) => {
       const char = entry[0];
@@ -37,9 +44,10 @@ function getAvgTypingTimes(typingTimes) {
 }
 
 function getTotalTime(typingTimes) {
-  return Object.values(typingTimes)
-    .flatMap((typingTime) => typingTime)
-    .reduce((prev, curr) => prev + curr, 0);
+  return typingTimes.reduce(
+    (sum, measure) => sum + Object.values(measure)[0],
+    0
+  );
 }
 
 function getAccuracy(text) {

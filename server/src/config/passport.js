@@ -3,14 +3,14 @@ const LocalStrategy = require("passport-local").Strategy;
 const User = require("../models/user");
 const passwordUtils = require("../utils/passwordUtils");
 
-const verifyCallback = async (username, password, done) => {
+const validateCallback = async (username, password, done) => {
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).select("+hash");
     if (!user) {
       return done(null, false);
     }
 
-    const isValid = passwordUtils.verify(password, user.hash);
+    const isValid = await passwordUtils.validate(password, user.hash);
     if (isValid) {
       return done(null, user);
     } else {
@@ -20,7 +20,7 @@ const verifyCallback = async (username, password, done) => {
     done(e);
   }
 };
-const strategy = new LocalStrategy(verifyCallback);
+const strategy = new LocalStrategy(validateCallback);
 
 passport.use(strategy);
 
@@ -30,7 +30,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (userId, done) => {
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select("+hash");
     done(null, user);
   } catch (e) {
     done(e);

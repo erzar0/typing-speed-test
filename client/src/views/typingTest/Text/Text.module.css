@@ -1,0 +1,14 @@
+@import "../../../App.module.css";
+.textContainer {
+  font-family: monospace;
+  font-size: 1.5rem;
+  padding: 1.2rem;
+  /* margin: 1rem; */
+  border-radius: 10px;
+  text-align: left;
+  display: inline-block;
+  background-color: var(--secondary);
+  outline-color: var(--primary);
+  outline-style: solid;
+  max-width: 66%;
+}

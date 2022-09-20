@@ -1,25 +1,51 @@
-import { useSelector } from "react-redux";
-
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
+import { setUser } from "./reduxSlices/userSlice";
+import authService from "./services/authService";
+import style from "./App.module.css";
 
 import Header from "./components/Header";
+import Notification from "./components/Notification";
+import Footer from "./components/Footer";
 
-import TestView from "./pages/testPage/Test";
-import TypingStatsView from "./pages/typingStats/TypingStats";
+import TestView from "./views/typingTest/TypingTest";
+import TypingStatsView from "./views/typingStats/TypingStats";
+import Login from "./views/login/Login";
+import Register from "./views/register/Register";
 
 function App() {
   const test = useSelector((state) => state.test);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    authService
+      .isUserLogged()
+      .then((data) => {
+        let user = null;
+        if (data.success) {
+          user = data.user;
+        }
+        dispatch(setUser(user));
+      })
+      .catch((e) => console.log(e));
+  }, []);
 
   return (
-    <div className="App">
-      <Header />
+    <div className={style.AppContainer}>
+      <Notification />
+      <Header user={user} />
       <Routes>
         <Route path="/" element={<TestView />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
         <Route
-          path="/currentStats"
+          path="/recent-stats"
           element={<TypingStatsView typingStats={test.typingStats} />}
         ></Route>
       </Routes>
+      <Footer />
     </div>
   );
 }

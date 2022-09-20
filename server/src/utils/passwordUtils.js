@@ -1,16 +1,15 @@
 const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
-function generate(password) {
-  bcrypt.hash(password, saltRounds, function (err, hash) {
-    return hash;
-  });
+
+async function generate(password) {
+  const hash = await bcrypt.hash(password, saltRounds);
+  return hash;
 }
 
-function validate(password, hash) {
-  bcrypt.compare(password, hash, function (err, result) {
-    return result;
-  });
+async function validate(password, hash) {
+  const result = await bcrypt.compare(password, hash);
+  return result;
 }
 
 module.exports = { generate, validate };
