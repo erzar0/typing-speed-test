@@ -3,9 +3,8 @@ const letterStyle = {
   correct: { color: "white", opacity: "0.5" },
   corrected: { color: "orange" },
   incorrect: {
-    color: "red",
-    textDecoration: "underline",
-    textDecorationThickness: "1px",
+    color: "white",
+    backgroundColor: "red",
   },
   current: { color: "black", backgroundColor: "white" },
   notTyped: { color: "white" },

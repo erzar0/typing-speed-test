@@ -19,22 +19,23 @@ import { useNavigate } from "react-router-dom";
 
 import textService from "../../services/textService";
 
-const Test = () => {
+const TypingTest = () => {
   const dispatch = useDispatch();
   const { test, text } = useSelector((state) => state);
   const navigate = useNavigate();
 
   useEffect(() => {
     const startTime = performance.now();
+    //Handling state of test
     if (test.status === "finished") {
       dispatch(setTypingStats(text));
       dispatch(resetTest());
       dispatch(resetText());
-      navigate("/recent-stats");
+      navigate("/current-stats");
       return;
     } else if (test.status === "notStarted") {
       textService
-        .getText("pl", "complex", 10)
+        .getText("pl", "10k", 5)
         .then((t) => {
           dispatch(initText(t));
           dispatch(setTestStatus("started"));
@@ -101,4 +102,4 @@ const Test = () => {
 //   const updatedLetter = { ...currLetter, typingTime, status };
 //   return updatedLetter;
 // }
-export default Test;
+export default TypingTest;

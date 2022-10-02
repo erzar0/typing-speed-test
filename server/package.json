@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prod": "node index.js",
-    "dev": "nodemon index.js"
+    "prod": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development nodemon index.js"
   },
   "author": "Eryk Zarębski",
   "license": "ISC",

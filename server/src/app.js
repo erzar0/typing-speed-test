@@ -15,6 +15,7 @@ const csurf = require("csurf");
 const rateLimit = require("express-rate-limit");
 const textRouter = require("./controllers/text");
 const authRouter = require("./controllers/auth");
+const { errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.use(passport.session());
 app.use(morgan("dev"));
 app.use("/api/text", textRouter);
 app.use("/api/auth", authRouter);
+app.use(errorHandler);
 
 app.get("/", (req, res) => {
   res.json({ elo: "world" });

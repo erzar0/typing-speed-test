@@ -2,4 +2,15 @@
 .StatsContainer {
   margin: 1rem;
   color: white;
+  width: 80vw;
+  height: 30vh;
+}
+
+.CustomTooltip {
+  /* border-radius: 0.25rem; */
+  background-color: var(--primary);
+  color: var(--tertiary);
+  padding: 0.5rem;
+  box-shadow: 15px 30px 40px 5px rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
