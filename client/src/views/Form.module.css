@@ -15,9 +15,10 @@
   composes: Button from "../App.module.css";
   font-size: 1rem;
   margin: 0.8rem 0 0 0;
-  padding: 0.5rem 0 0.5rem 0;
+  padding: 1rem 0 1rem 0;
   min-width: 100%;
   max-width: 100%;
+  border-width: 2px;
 }
 
 .InputLabel {
@@ -28,7 +29,7 @@
 
 .InputField {
   width: 98%;
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 .InputMessage {

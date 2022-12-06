@@ -15,6 +15,7 @@ const csurf = require("csurf");
 const rateLimit = require("express-rate-limit");
 const textRouter = require("./controllers/text");
 const authRouter = require("./controllers/auth");
+const testResultRouter = require("./controllers/testResult");
 const { errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
@@ -63,6 +64,7 @@ app.use(passport.session());
 app.use(morgan("dev"));
 app.use("/api/text", textRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/test-result", testResultRouter);
 app.use(errorHandler);
 
 app.get("/", (req, res) => {

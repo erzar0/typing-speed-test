@@ -44,7 +44,7 @@ function calcAccuracy(text) {
 }
 
 function calcRawWpm(text, stats) {
-  const totalTimeInMins = stats.totalTime / 1000 / 60;
+  const totalTimeInMins = stats.totalTypingTime / 1000 / 60;
   const charsPerMinute = text.length / totalTimeInMins;
   return charsPerMinute / 5;
 }

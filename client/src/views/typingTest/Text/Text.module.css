@@ -1,5 +1,7 @@
 @import "../../../App.module.css";
-.textContainer {
+.TextContainerUnfocused {
+  filter: blur(4px);
+  -webkit-filter: blur(3px);
   font-family: monospace;
   font-size: 1.5rem;
   padding: 1.2rem;
@@ -10,5 +12,18 @@
   background-color: var(--secondary);
   outline-color: var(--primary);
   outline-style: solid;
-  max-width: 66%;
+}
+
+.TextContainerFocused {
+  filter: none;
+  -webkit-filter: none;
+  font-family: monospace;
+  font-size: 1.5rem;
+  padding: 1.2rem;
+  border-radius: 10px;
+  text-align: left;
+  display: inline-block;
+  background-color: var(--secondary);
+  outline-color: var(--primary);
+  outline-style: solid;
 }

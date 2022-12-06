@@ -38,8 +38,6 @@ const WpmChart = ({ chartData }) => {
             label={{
               value: "No. Characters",
               position: "bottom",
-              // offset: -10,
-
               fill: "#ffc23c",
             }}
             color="green"
@@ -51,13 +49,11 @@ const WpmChart = ({ chartData }) => {
             label={{
               value: "WPM",
               angle: -90,
-              // offset: "-10",
               position: "insideLeft",
               fill: "#ffc23c",
             }}
           />
           <Tooltip content={<CustomTooltip />} />
-          {/* <Legend /> */}
         </AreaChart>
       </ResponsiveContainer>
     </>
@@ -65,11 +61,10 @@ const WpmChart = ({ chartData }) => {
 };
 
 function CustomTooltip({ active, payload, label }) {
-  console.log(payload);
   if (active) {
     return (
       <div className={style.CustomTooltip}>
-        <h4>#{label}</h4>
+        <h4>{label}</h4>
         <p>{payload[0].payload.temporaryAvgWpm.toFixed(0)}wpm</p>
       </div>
     );

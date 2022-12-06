@@ -12,9 +12,17 @@ const TypingStats = ({ typingStats }) => {
   }
 
   const chartData = calcDataForChart(typingStats.typingTimePerLetter, 5);
-
   return (
     <div className={style.StatsContainer}>
+      <h1 style={{ color: "limegreen", margin: 0 }}>
+        wpm: {typingStats.accurateWpm.toFixed(1)}
+      </h1>
+      <h4 style={{ color: "orange", margin: 0 }}>
+        raw wpm: {typingStats.rawWpm.toFixed(1)}
+      </h4>
+      <h4 style={{ margin: 0 }}>
+        accuracy: {typingStats.accuracy.toFixed(1) * 100}%
+      </h4>
       <WpmChart chartData={chartData} />
     </div>
   );

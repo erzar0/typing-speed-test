@@ -4,10 +4,10 @@ const textSlice = createSlice({
   name: "text",
   initialState: null,
   reducers: {
-    resetText(state, action) {
-      state = null;
-      return state;
-    },
+    // resetText(state, action) {
+    //   state = null;
+    //   return state;
+    // },
     initText(state, action) {
       const textStr = action.payload;
       const getBasicLetterState = (char, i) => {
