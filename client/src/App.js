@@ -37,7 +37,7 @@ function App() {
       <Notification />
       <Header user={user} />
       <Routes>
-        <Route path="/" element={<TypingTest />}></Route>
+        <Route path="/" element={<TypingTest user={user} />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
         <Route

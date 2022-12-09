@@ -1,7 +1,7 @@
 const basicLetterStyle = { margin: "0px" };
 const letterStyle = {
   correct: { color: "white", opacity: "0.5" },
-  corrected: { color: "orange" },
+  corrected: { color: "gray", opacity: "0.5" },
   incorrect: {
     color: "white",
     backgroundColor: "red",

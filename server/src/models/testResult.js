@@ -1,14 +1,17 @@
 const mongoose = require("mongoose");
 
-const letterStatsSchema = new mongoose.Schema({
-  position: Number,
-  char: String,
-  status: String,
-  typingTime: Number,
-});
-
 const testResultSchema = new mongoose.Schema({
-  testResult: { type: [letterStatsSchema], required: true },
+  testResult: {
+    type: [
+      {
+        position: Number,
+        char: String,
+        status: String,
+        typingTime: Number,
+      },
+    ],
+    required: true,
+  },
   dateOfCompletion: Date,
   user: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
 });

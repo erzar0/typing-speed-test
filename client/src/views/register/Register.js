@@ -56,6 +56,12 @@ const Register = () => {
 
     return errors;
   };
+  const InputError = ({ meta }) => {
+    if (meta.error && meta.touched) {
+      return <span className={style.InputMessage}>{meta.error}</span>;
+    }
+    return null;
+  };
   return (
     <div className={style.FormContainer}>
       <h1>Register</h1>
@@ -75,7 +81,7 @@ const Register = () => {
                       type="text"
                       placeholder="Username"
                     ></input>
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
+                    <InputError meta={meta} />
                   </div>
                 )}
               </Field>
@@ -89,7 +95,7 @@ const Register = () => {
                       type="password"
                       placeholder="Password"
                     ></input>
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
+                    <InputError meta={meta} />
                   </div>
                 )}
               </Field>
@@ -103,7 +109,7 @@ const Register = () => {
                       type="password"
                       placeholder="Confirm"
                     ></input>
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
+                    <InputError meta={meta} />
                   </div>
                 )}
               </Field>
@@ -117,7 +123,7 @@ const Register = () => {
                       type="text"
                       placeholder="Email"
                     ></input>
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
+                    <InputError meta={meta} />
                   </div>
                 )}
               </Field>

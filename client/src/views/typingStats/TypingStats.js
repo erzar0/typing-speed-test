@@ -11,7 +11,8 @@ const TypingStats = ({ typingStats }) => {
     );
   }
 
-  const chartData = calcDataForChart(typingStats.typingTimePerLetter, 5);
+  const step = Math.min(typingStats.typingTimePerLetter.length / 2, 20);
+  const chartData = calcDataForChart(typingStats.typingTimePerLetter, step);
   return (
     <div className={style.StatsContainer}>
       <h1 style={{ color: "limegreen", margin: 0 }}>
@@ -28,7 +29,7 @@ const TypingStats = ({ typingStats }) => {
   );
 };
 
-//Calculates average typing time of n adjecent letters
+//Calculates average typing time of n adjecent letters (moving average)
 function calcDataForChart(typingTimePerLetter, letterCount) {
   let result = [{ temporaryAvgWpm: 0, letterCount: 0 }];
   let sumOfTimes = 0;

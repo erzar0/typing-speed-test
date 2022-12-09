@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { generateTypingStats } from "../utils/testStats";
 import axios from "axios";
+import testResultService from "../services/testResultService";
 
 const initialState = {
   status: "notLoaded",
@@ -44,10 +45,12 @@ export const {
   setTypingStats,
 } = testSlice.actions;
 
-export const resetTest = (testResult) => {
+export const resetTestAndPostResult = ({ testResult, user }) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post("/api/test-result", testResult);
+      if (user.username) {
+        const res = await testResultService.postTestResult(testResult);
+      }
     } catch (e) {
       console.log(e);
     }
