@@ -52,6 +52,7 @@ authRouter.route("/login-success").get(async (req, res) => {
   }
   res.json({ success: false, message: "you are not authenticated" });
 });
+
 authRouter.route("/login-failure").get((req, res) => {
   res.status(401).json({ success: false, message: "authentication failed" });
 });

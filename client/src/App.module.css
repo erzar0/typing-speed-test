@@ -16,7 +16,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-content: space-between;
   align-items: center;
   max-height: 100%;
   min-height: 100vh;
@@ -25,17 +24,20 @@ body {
 }
 
 .Button {
-  background-color: var(--tertiary);
+  background-color: var(--primary);
   font-size: 1.2rem;
   text-decoration: none;
-  color: black;
+  color: var(--tertiary);
   padding: 0.3rem 0.7rem;
   margin: 0.5rem;
-  box-shadow: 2px 2px 2px 0px black;
-  border-radius: 10px;
+  border-color: var(--tertiary);
+  border-style: solid;
+  border-width: 1px;
+  transition: color border-color 300ms ease-out 100ms;
 }
 
 .Button:hover {
-  background-color: var(--quaternary);
+  border-color: var(--quaternary);
+  color: var(--quaternary);
   cursor: pointer;
 }

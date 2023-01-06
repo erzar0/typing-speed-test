@@ -1,11 +1,10 @@
 const basicLetterStyle = { margin: "0px" };
 const letterStyle = {
   correct: { color: "white", opacity: "0.5" },
-  corrected: { color: "orange" },
+  corrected: { color: "gray", opacity: "0.5" },
   incorrect: {
-    color: "red",
-    textDecoration: "underline",
-    textDecorationThickness: "1px",
+    color: "white",
+    backgroundColor: "red",
   },
   current: { color: "black", backgroundColor: "white" },
   notTyped: { color: "white" },

@@ -9,8 +9,8 @@ const Header = ({ user }) => {
         <div className={style.HeaderButton}>Test</div>
       </Link>
 
-      <Link className={style.Link} to={"/recent-stats"}>
-        <div className={style.HeaderButton}>Recent Stats</div>
+      <Link className={style.Link} to={"/current-stats"}>
+        <div className={style.HeaderButton}>Current Stats</div>
       </Link>
 
       {user ? (

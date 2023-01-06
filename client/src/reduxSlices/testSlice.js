@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { generateTypingStats } from "../utils/testStats";
+import axios from "axios";
+import testResultService from "../services/testResultService";
 
 const initialState = {
-  status: "notStarted",
+  status: "notLoaded",
   caretPosition: 0,
   typingStats: null,
 };
@@ -27,7 +29,7 @@ const testSlice = createSlice({
       state.typingStats = generateTypingStats(action.payload);
       return state;
     },
-    resetTest(state, action) {
+    reset(state, action) {
       state = { ...initialState, typingStats: state.typingStats };
       return state;
     },
@@ -36,9 +38,22 @@ const testSlice = createSlice({
 
 export default testSlice.reducer;
 export const {
-  resetTest,
+  reset,
   setTestStatus,
   moveCaretForward,
   moveCaretBackward,
   setTypingStats,
 } = testSlice.actions;
+
+export const resetTestAndPostResult = ({ testResult, user }) => {
+  return async (dispatch) => {
+    try {
+      if (user.username) {
+        const res = await testResultService.postTestResult(testResult);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    dispatch(reset());
+  };
+};

@@ -4,6 +4,7 @@ const User = require("../models/user");
 const passwordUtils = require("../utils/passwordUtils");
 
 const validateCallback = async (username, password, done) => {
+  console.log(password, username);
   try {
     const user = await User.findOne({ username }).select("+hash");
     if (!user) {

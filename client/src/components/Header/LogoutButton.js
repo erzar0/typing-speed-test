@@ -1,8 +1,9 @@
 import style from "./Header.module.css";
-import authService from "../services/authService";
+import authService from "../../services/authService";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "../reduxSlices/userSlice";
+import { setUser } from "../../reduxSlices/userSlice";
 import { useDispatch } from "react-redux";
+
 const LogoutButton = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();

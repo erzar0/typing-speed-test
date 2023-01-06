@@ -5,12 +5,12 @@ import { setUser } from "./reduxSlices/userSlice";
 import authService from "./services/authService";
 import style from "./App.module.css";
 
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
 import Notification from "./components/Notification";
-import Footer from "./components/Footer";
+import Footer from "./components/Footer/Footer";
 
-import TestView from "./views/typingTest/TypingTest";
-import TypingStatsView from "./views/typingStats/TypingStats";
+import TypingTest from "./views/typingTest/TypingTest";
+import TypingStats from "./views/typingStats/TypingStats";
 import Login from "./views/login/Login";
 import Register from "./views/register/Register";
 
@@ -37,12 +37,12 @@ function App() {
       <Notification />
       <Header user={user} />
       <Routes>
-        <Route path="/" element={<TestView />}></Route>
+        <Route path="/" element={<TypingTest user={user} />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
         <Route
-          path="/recent-stats"
-          element={<TypingStatsView typingStats={test.typingStats} />}
+          path="/current-stats"
+          element={<TypingStats typingStats={test.typingStats} />}
         ></Route>
       </Routes>
       <Footer />

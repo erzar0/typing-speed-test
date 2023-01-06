@@ -2,63 +2,56 @@ function generateTypingStats(text) {
   if (!text) return null;
 
   let stats = {};
-  stats.typingTimes = getTypingTimes(text);
-  stats.avgTypingTimes = getAvgTypingTimes(text);
-  stats.totalTime = getTotalTime(stats.typingTimes);
-  stats.accuracy = getAccuracy(text);
-  stats.overallWpm = getOverallWpm(text, stats);
-  stats.accurateWpm = stats.overallWpm * stats.accuracy;
+  stats.typingTimePerLetter = getTypingTimePerLetter(text);
+  stats.averageTypingTimePerLetter = calcAverageTypingTimePerLetter(
+    stats.typingTimePerLetter
+  );
+  stats.totalTypingTime = calcTotalTypingTime(stats.typingTimePerLetter);
+  stats.accuracy = calcAccuracy(text);
+  stats.rawWpm = calcRawWpm(text, stats);
+  stats.accurateWpm = stats.rawWpm * stats.accuracy;
   return stats;
 }
 
-function getTypingTimes(text) {
+function getTypingTimePerLetter(text) {
   return text.map((l) => {
-    return { [l.char]: l.typingTime };
+    return { time: l.typingTime, character: l.char };
   });
 }
 
-function getAvgTypingTimes(text) {
-  const getTypingTimesSorted = () => {
-    let typingTimes = {};
-    for (let letter of text) {
-      const t = letter.typingTime;
-      const char = letter.char;
-      typingTimes[char] = typingTimes[char] ? [...typingTimes[char], t] : [t];
-    }
-    return typingTimes;
-  };
-
-  const typingTimesSorted = getTypingTimesSorted();
-  let avgTypingTimes = {};
-  Object.entries(typingTimesSorted)
-    .sort()
-    .forEach((entry) => {
-      const char = entry[0];
-      const timesArray = entry[1];
-      const avgTime = Math.round(
-        timesArray.reduce((acc, curr) => acc + curr, 0) / timesArray.length
-      );
-      avgTypingTimes[char] = avgTime;
-    });
-  return avgTypingTimes;
+function calcAverageTypingTimePerLetter(typingTimePerLetter) {
+  let result = {};
+  typingTimePerLetter.forEach((entry) => {
+    result[entry.character] = result[entry.character]
+      ? [...result[entry.character], entry.time]
+      : [entry.time];
+  });
+  const sum = (arr) => arr.reduce((sum, entry) => sum + entry, 0);
+  return Object.entries(result).map(([character, times]) => {
+    return { [character]: sum(times) / times.length };
+  });
 }
 
-function getTotalTime(typingTimes) {
-  return typingTimes.reduce(
-    (sum, measure) => sum + Object.values(measure)[0],
-    0
-  );
+function calcTotalTypingTime(typingTimePerLetter) {
+  return typingTimePerLetter.reduce((sum, letter) => sum + letter.time, 0);
 }
 
-function getAccuracy(text) {
+function calcAccuracy(text) {
   return (
-    text.filter((letter) => letter.status === "correct").length / text.length
+    text.filter(({ status }) => status === "correct" || status === "corrected")
+      .length / text.length
   );
 }
 
-function getOverallWpm(text, stats) {
-  const totalTimeInMins = stats.totalTime / 1000 / 60;
+function calcRawWpm(text, stats) {
+  const totalTimeInMins = stats.totalTypingTime / 1000 / 60;
   const charsPerMinute = text.length / totalTimeInMins;
   return charsPerMinute / 5;
 }
-export { generateTypingStats };
+
+function calcTemporaryWpm(time, amountOfLetters = 1) {
+  const timeInMins = time / 1000 / 60;
+  const charsPerMinute = amountOfLetters / timeInMins;
+  return charsPerMinute / 5;
+}
+export { generateTypingStats, calcTemporaryWpm };
